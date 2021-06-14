@@ -1,4 +1,5 @@
 import { Str } from "https://code4fukui.github.io/mojikiban/Str.js";
+import { ArrayUtil } from "https://js.sabae.cc/ArrayUtil.js";
 
 const names = [
   "第1水準",
@@ -8,7 +9,11 @@ const names = [
   "非漢字",
 ];
 
-const jisx0213c = new Str(names.map(name => Deno.readTextFileSync("../sample/JISX0213_" + name + ".txt")).join(""));
+const jisx0213c = new Str(names.map(name => {
+  const s = new Str(Deno.readTextFileSync("../sample/JISX0213_" + name + ".txt"));
+  console.log(name + ": " + s.length, "unique: ", ArrayUtil.isUnique(s));
+  return s;
+}).join(""));
 
 const jisx0213 = new Str(await Deno.readTextFile("../sample/JISX0213.txt"));
 console.log(jisx0213c == jisx0213);
